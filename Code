@@ -1,0 +1,89 @@
+import pygame
+import random
+import math
+
+# Boilereplate code (just something ig..)
+pygame.init()
+gamescreen = pygame.display.set_mode((900, 900))
+pygame.display.set_caption("STAR WARS LETS GO")
+clock = pygame.time.Clock()
+
+#particles cus Yas (variables for snow thingies also known as whats gonna make lightspeed look like lightspeed.)
+
+xpos = []
+ypos = []
+xVel = []
+yVel = []
+speed = 2
+
+for i in range(1000):
+    xpos.append(450)
+    ypos.append(450)
+    
+    velX = random.uniform(-2,2)
+    velY = random.uniform(-2,2)
+    
+    magnitude = math.sqrt(velX**2 + velY**2)
+    
+    if magnitude != 0:
+        normalizedVelX = speed * velX / magnitude
+        normalizedVelY = speed * velY / magnitude
+        
+    else:
+        normalizedVelX = 0
+        normalizedVelY = 0
+    
+    
+    xVel.append(normalizedVelX)
+    yVel.append(normalizedVelY)
+
+# GAME LOOP WAHAHAHAHAHAHAHHHAHHHHAHAHAHAAAHAHAAHAHHAHHHAHHHAHAHAHAHAHAHAHAHAHAHAHHHAHAAHAHAHAHHAAAAHAHAHAHHAHAHAHAHAHAHAHAH
+while True:
+    clock.tick(60)
+
+    #PHYSICS
+    for i in range(1000):
+        xpos[i] += xVel[i]
+        ypos[i] += yVel[i]
+    
+        # Boundry checking
+        if xpos[i] < 0 or xpos[i] > 900 or ypos[i] < 0 or ypos[i] > 900:
+            xpos[i] = 450
+            ypos[i] = 450
+            
+            
+            velX = random.uniform(-1, 1)
+            velY = random.uniform(-1, 1)
+            
+            magnitude = math.sqrt(velX**2 + velY**2)
+            
+            if magnitude != 0:
+                normalizedVelX = 2 * velX / magnitude
+                normalizedVelY = 2 * velY / magnitude
+                
+            else:
+                normalizedVelX = 0
+                normalizedVelY = 0
+                
+                
+            #lists
+            xpos.append(450)
+            ypos.append(450)
+            xVel.append(normalizedVelX)
+            yVel.append(normalizedVelY)
+            
+        
+    # Event handling -----------------------------------------------------------------------------------------------------------------
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            break
+        
+        
+    #Render sec
+    gamescreen.fill((0,0,0))
+    for i in range(1000):
+        pygame.draw.circle(gamescreen, (255, 255, 255), (xpos[i], ypos[i]), 5)
+    pygame.display.flip()
+    
+#en og gl
+pygame.quit()
